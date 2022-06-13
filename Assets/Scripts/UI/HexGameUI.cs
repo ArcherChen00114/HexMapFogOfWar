@@ -91,4 +91,9 @@ public class HexGameUI : MonoBehaviour
 			}
 		}
 	}
+    private void OnEnable()
+	{
+		Shader.DisableKeyword("HEX_MAP_EDIT_MODE");
+
+	}
 }
