@@ -20,6 +20,9 @@ public class HexCell : MonoBehaviour {
 	int elevation = int.MinValue;
 
 	bool hasIncomingRiver, hasOutgoingRiver;
+
+	bool explored;
+
 	HexDirection incomingRiver, outgoingRiver;
 
 	[SerializeField]
@@ -45,12 +48,105 @@ public class HexCell : MonoBehaviour {
 
 	public int Index { get; set; }
 
-	public bool IsExplored { get; private set; }
+	public bool Explorable { get; set; }
+	public bool IsExplored {
+		get
+		{
+			return explored && Explorable;
+		}
+		private set
+		{
+			explored = value;
+		}
+	}
+
+	public int Elevation
+	{
+		get
+		{
+			return elevation;
+		}
+		set
+		{
+			if (elevation == value)
+			{
+				return;
+			}
+			int originalViewElevation = ViewElevation;
+			elevation = value;
+			if (ViewElevation != originalViewElevation)
+			{
+				ShaderData.ViewElevationChanged();
+			}
+			RefreshPosition();
+			ValidateRivers();
+			for (int i = 0; i < roads.Length; i++)
+			{
+				if (roads[i] && GetElevationDifference((HexDirection)i) > 1)
+				{
+					SetRoad(i, false);//
+				}
+			}
+
+			Refresh();
+		}
+	}
+	public int WaterLevel
+	{//定义水下高度，低于该高度就是水下部分
+		get
+		{
+			return waterLevel;
+		}
+		set
+		{
+			if (waterLevel == value)
+			{
+				return;
+			}
+			int originalViewElevation = ViewElevation;
+			waterLevel = value;
+			if (ViewElevation != originalViewElevation)
+			{
+				ShaderData.ViewElevationChanged();
+			}
+			ValidateRivers();
+			Refresh();
+		}
+	}
+	public bool IsUnderwater
+	{
+		get
+		{
+			return waterLevel > elevation;
+		}
+	}
+
+	public bool HasRoads//但凡有条路也不会是false
+	{
+		get
+		{
+			for (int i = 0; i < roads.Length; i++)
+			{
+				if (roads[i])
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	public int ViewElevation
+	{
+		get
+		{
+			return elevation >= waterLevel ? elevation : waterLevel;
+		}
+	}
 	public bool IsVisible
 	{
 		get
 		{
-			return visibility > 0;
+			return visibility > 0 && Explorable;
 		}
 	}
 	public void IncreaseVisibility()
@@ -67,6 +163,14 @@ public class HexCell : MonoBehaviour {
 		visibility -= 1;
 		if (visibility == 0)
 		{
+			ShaderData.RefreshVisibility(this);
+		}
+	}
+	public void ResetVisibility()
+	{
+		if (visibility > 0)
+		{
+			visibility = 0;
 			ShaderData.RefreshVisibility(this);
 		}
 	}
@@ -256,45 +360,7 @@ public class HexCell : MonoBehaviour {
 			return hasIncomingRiver ? incomingRiver : outgoingRiver;
 		}
 	}
-	public int WaterLevel
-	{//定义水下高度，低于该高度就是水下部分
-		get
-		{
-			return waterLevel;
-		}
-		set
-		{
-			if (waterLevel == value)
-			{
-				return;
-			}
-			waterLevel = value;
-			ValidateRivers();
-			Refresh();
-		}
-	}
-	public bool IsUnderwater
-	{
-		get
-		{
-			return waterLevel > elevation;
-		}
-	}
 
-	public bool HasRoads//但凡有条路也不会是false
-	{
-		get
-		{
-			for (int i = 0; i < roads.Length; i++)
-			{
-				if (roads[i])
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-	}
 	public void DisableHighlight()
 	{
 		Image highlight = uiRect.GetChild(0).GetComponent<Image>();
@@ -388,28 +454,6 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
-	public int Elevation {
-		get {
-			return elevation;
-		}
-		set {
-			if (elevation == value) {
-				return;
-			}
-			elevation = value;
-			RefreshPosition();
-			ValidateRivers();
-			for (int i = 0; i < roads.Length; i++)
-			{
-				if (roads[i] && GetElevationDifference((HexDirection)i) > 1)
-				{
-					SetRoad(i, false);//
-				}
-			}
-
-			Refresh();
-		}
-	}
 	void RefreshPosition()
 	{
 		Vector3 position = transform.localPosition;
