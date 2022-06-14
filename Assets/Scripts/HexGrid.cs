@@ -191,6 +191,15 @@ public class HexGrid : MonoBehaviour {
 		path.Reverse();
 		return path;
 	}
+	public HexCell GetCell(int xOffset, int zOffset)
+	{
+		return cells[xOffset + zOffset * cellCountX];
+	}
+
+	public HexCell GetCell(int cellIndex)
+	{
+		return cells[cellIndex];
+	}
 	public HexCell GetCell (Vector3 position) {
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);

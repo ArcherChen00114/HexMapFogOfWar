@@ -2466,7 +2466,7 @@ GameObject:
   - component: {fileID: 303924590}
   - component: {fileID: 303924591}
   m_Layer: 5
-  m_Name: Edit Toggle
+  m_Name: Generate Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2485,12 +2485,12 @@ RectTransform:
   m_Children:
   - {fileID: 796319274}
   - {fileID: 2094433662}
-  m_Father: {fileID: 2086146353}
-  m_RootOrder: 8
+  m_Father: {fileID: 329126806}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 3.9999847, y: -190}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -46, y: -25}
   m_SizeDelta: {x: 92, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &303924591
@@ -2540,21 +2540,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2142000451}
-        m_TargetAssemblyTypeName: HexMapEditor, Assembly-CSharp
-        m_MethodName: SetEditMode
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 942684507}
-        m_TargetAssemblyTypeName: HexGameUI, Assembly-CSharp
-        m_MethodName: SetEditMode
+      - m_Target: {fileID: 358301793}
+        m_TargetAssemblyTypeName: NewMapMenu, Assembly-CSharp
+        m_MethodName: ToggleMapGeneration
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2599,6 +2587,7 @@ RectTransform:
   - {fileID: 626494668}
   - {fileID: 31310512}
   - {fileID: 37399488}
+  - {fileID: 303924590}
   m_Father: {fileID: 358301789}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2838,6 +2827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aad8621fd82304c88f3f247ceb2ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1163217248}
   hexGrid: {fileID: 1571186511}
 --- !u!1 &374234739
 GameObject:
@@ -8008,6 +7998,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143044396}
   m_CullTransparentMesh: 1
+--- !u!1 &1163217247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1163217249}
+  - component: {fileID: 1163217248}
+  m_Layer: 0
+  m_Name: Hex Map Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1163217248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163217247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b07c324b671fce4b9087d641e247f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 1571186511}
+  jitterProbability: 0.25
+  chunkSizeMin: 30
+  chunkSizeMax: 100
+  landPercentage: 50
+  waterLevel: 3
+  highRiseProbability: 0.59
+--- !u!4 &1163217249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163217247}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 82.7745, y: 9.047723, z: 72.95087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1178569573
 GameObject:
   m_ObjectHideFlags: 0
@@ -9307,7 +9347,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 160, y: 215}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1306014388
@@ -11472,8 +11512,7 @@ MonoBehaviour:
   cellLabelPrefab: {fileID: 3959619023558204276, guid: 77ef8fe6c587202439cd4fc4f6dcd633, type: 3}
   chunkPrefab: {fileID: 114000010052569294, guid: 7622d007cafd044a1b1189c0b93d2912, type: 3}
   noiseSource: {fileID: 2800000, guid: 38701cdeb1fb9427cbb585f917aa59cb, type: 3}
-  HeightMap: {fileID: 2800000, guid: 18981f96d96ae524facec9803a9a483b, type: 3}
-  ColorMap: {fileID: 0}
+  HeightMap: {fileID: 2800000, guid: f712fdf8c98b82443a968ca2bb849803, type: 3}
   seed: 3
   colors:
   - {r: 0.7647059, g: 0.7647059, b: 0.4392157, a: 0.53333336}
@@ -15069,7 +15108,6 @@ RectTransform:
   - {fileID: 2074694607}
   - {fileID: 1296081125}
   - {fileID: 1539690637}
-  - {fileID: 303924590}
   m_Father: {fileID: 2142000450}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15186,7 +15224,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Edit
+  m_Text: Generate
 --- !u!222 &2094433664
 CanvasRenderer:
   m_ObjectHideFlags: 0

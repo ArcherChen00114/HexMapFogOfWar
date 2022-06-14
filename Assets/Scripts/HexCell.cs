@@ -264,7 +264,8 @@ public class HexCell : MonoBehaviour {
 	public void Save(BinaryWriter writer)
 	{
 		writer.Write((byte)terrainTypeIndex);
-		writer.Write((byte)elevation);
+		//使0处于127位，将正负分到两边，使其能够保存负值
+		writer.Write((byte)(elevation + 127));
 		writer.Write((byte)waterLevel);
 		writer.Write((byte)urbanLevel);
 		writer.Write((byte)farmLevel);
@@ -307,6 +308,11 @@ public class HexCell : MonoBehaviour {
 	{
 		terrainTypeIndex = reader.ReadByte();
 		ShaderData.RefreshTerrain(this);
+		//4版存档高度默认存储为高度+127
+		if (header >= 4)
+		{
+			elevation -= 127;
+		}
 		elevation = reader.ReadByte();
 		RefreshPosition();
 		waterLevel = reader.ReadByte();

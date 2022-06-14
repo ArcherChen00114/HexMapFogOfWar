@@ -15,7 +15,7 @@ public class SaveLoadMenu : MonoBehaviour
 	public SaveLoadItem itemPrefab;
 	public InputField nameInput;
 
-	const int mapFileVersion = 3;
+	const int mapFileVersion = 4;
 	public void Open(bool saveMode)
 	{
 		this.saveMode = saveMode;
